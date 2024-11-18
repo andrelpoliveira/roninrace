@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
-  smoothTime: 2
+  smoothTime: 6
   jumpHeight: 3
   gravityMultiplier: 1
   _jumpPressed: 0
