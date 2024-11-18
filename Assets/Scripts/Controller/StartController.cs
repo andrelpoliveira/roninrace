@@ -56,6 +56,9 @@ public class StartController : MonoBehaviour
     public int indexSkin;
     public int indexAcessory;
 
+    /*[Header("Sistema de Pareamento Fusion")]
+    public BasicSpawner spawner;*/
+
     #region Unity Methods
     /// <summary>
     /// Função Start
@@ -65,6 +68,7 @@ public class StartController : MonoBehaviour
         StartGame(0);
         startButton.onClick.RemoveAllListeners();
         startButton.onClick.AddListener(() => StartGame(1));
+        //spawner = FindAnyObjectByType<BasicSpawner>();
     }
 
     #endregion
@@ -241,13 +245,19 @@ public class StartController : MonoBehaviour
     /// </summary>
     public void ButtonStartSeason()
     {
-        GameManager gameManager = GameManager.instance;
+        //spawner.StartSeason();
+
+        /*GameManager gameManager = GameManager.instance;
 
         gameManager.characterIndex = indexCharacter;
         gameManager.characterSkinIndex = indexSkin;
-        gameManager.characterAcessoryIndex = indexAcessory;
+        gameManager.characterAcessoryIndex = indexAcessory;*/
         
     }
-
+    
+    public void ButtonJoinSeason()
+    {
+        //spawner.EnterSeason();
+    }
     #endregion
 }

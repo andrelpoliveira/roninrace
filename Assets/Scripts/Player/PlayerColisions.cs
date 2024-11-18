@@ -43,6 +43,7 @@ public class PlayerColisions : MonoBehaviour
             //playerController.enabled = false;
 
         }
+        
     }
     private void OnTriggerExit(Collider other)
     {
@@ -50,6 +51,7 @@ public class PlayerColisions : MonoBehaviour
         {
             characterMovement.speed = actualSpeed;
         }
+        
     }
     #endregion
     //////////////////////////////////////Métodos de traps//////////////////////////////////
@@ -72,7 +74,7 @@ public class PlayerColisions : MonoBehaviour
     {
         actualSpeed = characterMovement.speed;
         characterMovement.speed = -8f;
-        StartCoroutine(DisableConfusionaTrap(timeParalyze));
+        StartCoroutine(DisableConfusionTrap(timeParalyze));
     }
     /// <summary>
     /// Reduz a velocidade do jogador por 2s
@@ -100,7 +102,7 @@ public class PlayerColisions : MonoBehaviour
     /// </summary>
     /// <param name="timeP"></param>
     /// <returns></returns>
-    IEnumerator DisableConfusionaTrap(float timeP)
+    IEnumerator DisableConfusionTrap(float timeP)
     {
         yield return new WaitForSeconds(timeP);
         characterMovement.speed = actualSpeed;
