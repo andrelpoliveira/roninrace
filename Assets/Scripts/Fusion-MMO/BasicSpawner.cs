@@ -11,9 +11,10 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public bool connectOnAwake;
     [Tooltip("Fusion")]
     [HideInInspector]public NetworkRunner _networkRunner;
-
+    [Space]
     [Header("Objeto Player")]
-    [SerializeField] private NetworkPrefabRef _playerPrefab;
+    public int _chosenPlayer;
+    [SerializeField] private NetworkPrefabRef[] _playerPrefab;
     [Header("Objeto Spawn")]
     public Transform _spawnPlayer;
     
@@ -28,14 +29,17 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if(_networkRunner == null)
         {
             _networkRunner = gameObject.AddComponent<NetworkRunner>();
+          
         }
 
         await _networkRunner.StartGame(new StartGameArgs()
         {
             GameMode = gameMode,
             SessionName = "Teste Ronin",
+            Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
             PlayerCount = 5,
         });
+        
     }
     /// <summary>
     /// Inicia como host
@@ -55,7 +59,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     }
     public void OnConnectedToServer(NetworkRunner runner)
     {
-        NetworkObject playerObject = runner.Spawn(_playerPrefab,_spawnPlayer.position,Quaternion.identity);
+        NetworkObject playerObject = runner.Spawn(_playerPrefab[_chosenPlayer],_spawnPlayer.position,Quaternion.identity);
 
         runner.SetPlayerObject(runner.LocalPlayer, playerObject);
 

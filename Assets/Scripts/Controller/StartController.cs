@@ -1,263 +1,194 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StartController : MonoBehaviour
 {
-    [Header("Input Canvas")]
-    public GameObject[] canvas;
+    [Header("Paineis")]
+    public GameObject[] paineis;
+    public GameObject[] loginPanels;
+    public Image bgSettings;
     [Space]
-    [Header("Panels")]
-    public GameObject[] panelsGame;
+    [Header("Componentes de UI")]
+    public Button btnSound;
     [Space]
-    [Header("Buttons Canvas")]
-    public Button startButton;
+    [Header("Controle de cena")]
+    public int _scene;
     [Space]
-    [Tooltip("Panel Character")]
-    [Header("TMP")]
-    public TMP_Text tmpNameCharacter;
-    public TMP_Text[] tmpNamesCharacters;
-    [Tooltip("TMP Skins")]
-    public TMP_Text tmpNameSkin;
-    public TMP_Text tmpCostSkin;
-    [Tooltip("TMP Talents")]
-    public TMP_Text tmpTalentName;
-    public TMP_Text tmpDescriptionTalent;
-    public TMP_Text tmpCostTalent;
-    [Tooltip("TMP Acessories")]
-    public TMP_Text tmpNameAcessory;
-    public TMP_Text tmpCostAcessory;
-    [Space]
-    [Header("Buttons")]
-    public Button btnNext;
-    public Button btnPrevious;
-    [Space]
-    [Header("Variáveis de controle")]
-    public string[] nameCharacter;
-    public GameObject[] characters;
-    [Tooltip("Skins")]
-    public string[] nameSkin;
-    public int[] costSkin;
-    [Tooltip("Acessory")]
-    public string[] nameAcessory;
-    public int[] costAcessory;
-    [Tooltip("Talents")]
-    public string[] talentName;
-    public string[] talentDescription;
-    public int[] costTalent;
-    [Tooltip("Controle de personagem")]
-    public int indexCharacter;
-    [Tooltip("Controle de talentos")]
-    public int indexTalent;
-    [Tooltip("Controle de Skins e Acessórios")]
-    public int indexSkin;
-    public int indexAcessory;
-
-    /*[Header("Sistema de Pareamento Fusion")]
-    public BasicSpawner spawner;*/
+    [Header("Componentes do Profile")]
+    public RawImage imgPicProfile;
+    public TMP_Text tmpUsername;
+    public TMP_Text tmpEmail;
 
     #region Unity Methods
-    /// <summary>
-    /// Função Start
-    /// </summary>
-    void Start()
+    private void Start()
     {
-        StartGame(0);
-        startButton.onClick.RemoveAllListeners();
-        startButton.onClick.AddListener(() => StartGame(1));
-        //spawner = FindAnyObjectByType<BasicSpawner>();
-    }
+        /*for (int i = 0; i < paineis.Length; i++)
+        {
+            paineis[i].SetActive(false);
+        }
+        paineis[0].SetActive(true);*/
 
+    }
     #endregion
 
     #region My Methods
-    /// <summary>
-    /// Função de iniciar os canvas do game
-    /// </summary>
-    /// <param name="index"></param>
-    public void StartGame(int index)
-    {
-        for (int i = 0; i < canvas.Length; i++)
-        {
-            canvas[i].gameObject.SetActive(false);
-        }
-        canvas[index].gameObject.SetActive(true);
 
-        for (int i = 0;i < tmpNamesCharacters.Length; i++)
-        {
-            tmpNamesCharacters[i].text = nameCharacter[i];
-        }
+    /////////////////////////////////////////Paineis de entrada do game//////////////////////////////////
 
-        if (index == 1)
-            SwitchPanels(0);
-    }
     /// <summary>
-    /// Função de controle dos painéis do game
+    /// Alterna entre os painéis de menu do game
+    /// index 0 - Painel Join
+    /// index 1 - Painel Configurações
+    /// index 2 - Painel Volume
+    /// index 3 - Painel Idioma
+    /// index 4 - Painel de Escolha de Login
     /// </summary>
-    /// <param name="indexPanels"></param>
-    public void SwitchPanels(int indexPanels)
+    /// <param name="indexPanel"></param>
+    public void SwitchPanels(int indexPanel)
     {
-        for(int i = 0;i < panelsGame.Length; i++)
-        {
-            panelsGame[i].gameObject.SetActive(false);
-        }
-        panelsGame[indexPanels].gameObject.SetActive(true);
-
-        if(indexPanels == 1)
-        {
-            SwitchNameCharacter(indexTalent);
-            SwitchSkins(indexTalent);
-            SwitchTalents(indexTalent);
-        }
-    }
-    /// <summary>
-    /// Função para trocar nomes e personagens na UI
-    /// </summary>
-    /// <param name="indexName"></param>
-    public void SwitchNameCharacter(int indexName)
-    {
-        tmpNameCharacter.text = "";
-        tmpNameCharacter.text = nameCharacter[indexName];
-        for (int i = 0; i < characters.Length; i++)
-        {
-            characters[i].gameObject.SetActive(false);
-        }
-        characters[indexName].gameObject.SetActive(true);
-        
-        indexCharacter = indexName;
-        indexTalent = 0;
-        SwitchTalents(indexTalent);
-    }
-    /// <summary>
-    /// Função para trocar nome e valor das skins
-    /// </summary>
-    /// <param name="indexSkins"></param>
-    public void SwitchSkins(int indexSkins)
-    {
-        tmpNameSkin.text = "";
-        tmpCostSkin.text = "";
-        tmpNameSkin.text = nameSkin[indexSkins];
-        tmpCostSkin.text = costSkin[indexSkins].ToString();
-        HideSkins(indexSkins);
-    }
-    /// <summary>
-    /// Função para trocar nome e valor dos acessórios
-    /// </summary>
-    /// <param name="indexAcessories"></param>
-    public void SwitchAcessories(int indexAcessories)
-    {
-        tmpNameAcessory.text = "";
-        tmpCostAcessory.text = "";
-        tmpNameAcessory.text = nameAcessory[indexAcessories];
-        tmpCostAcessory.text = costAcessory[indexAcessories].ToString();
-        HideAcessory(indexAcessories);
-    }
-    /// <summary>
-    /// Função de controle dos talentos de cada character
-    /// 
-    /// talent 0 = Double Jump
-    /// talent 1 = Dash
-    /// talent 2 = Trap
-    /// </summary>
-    /// <param name="indexTalents"></param>
-    public void SwitchTalents(int indexTalents)
-    {
-        indexTalent += indexTalents;
-        ResetTalentText();
-        switch(indexTalent)
+        switch (indexPanel)
         {
             case 0:
-                btnPrevious.interactable = false;
-                btnNext.interactable = true;
+                //
                 break;
             case 1:
-                btnPrevious.interactable = true;
-                btnNext.interactable = true;
+                OpenSettings();
                 break;
             case 2:
-                btnPrevious.interactable = true;
-                btnNext.interactable = false;
+                OpenSoundPanel();
+                break;
+            case 3:
+                OpenLanguagePanel();
+                break;
+            case 4:
+                OpenLoginPanel();
                 break;
         }
-        tmpTalentName.text = talentName[indexTalent];
-        tmpDescriptionTalent.text = talentDescription[indexTalent];
-        tmpCostTalent.text = costTalent[indexTalent].ToString();
     }
     /// <summary>
-    /// Limpa os campos de textos dos talentos
+    /// Abre painel de settings
     /// </summary>
-    void ResetTalentText()
+    public void OpenSettings()
     {
-        tmpTalentName.text = "";
-        tmpDescriptionTalent.text = "";
-        tmpCostTalent.text = "";
+        paineis[1].SetActive(true);
+        OpenSoundPanel();
     }
     /// <summary>
-    /// Função que inicia as skins do personagem
+    /// Abre o painel de Controle de volume
     /// </summary>
-    /// <param name="skins"></param>
-    void HideSkins(int skins)
+    public void OpenSoundPanel()
     {
-        characters[indexCharacter].GetComponent<FindItensPlayer>().StartChildren();
+        bgSettings.color = new Color(0f, 0.6f, 0.9450981f, 0.6f);
+        paineis[3].SetActive(false);
+        paineis[2].SetActive(true);
+    }
+    /// <summary>
+    /// Abre o painel de idiomas
+    /// </summary>
+    public void OpenLanguagePanel()
+    {
+        bgSettings.color = new Color(0.9960785f, 0.2666667f, 0f, 0.6f);
+        paineis[2].SetActive(false);
+        paineis[3].SetActive(true);
+    }
+    /// <summary>
+    /// Abre o painel de Login para escolha do jogador
+    /// </summary>
+    public void OpenLoginPanel()
+    {
+        paineis[4].SetActive(true);
+        SwitchLoginPanels(0);
+    }
 
-        switch (skins)
+    ///////////////////////////////////Paineis de Login do game//////////////////////////////////////////
+
+    /// <summary>
+    /// Alterna entre os paineís de registro e login do game
+    /// index 0 - Painel de escolha de login
+    /// index 1 - Painel de login por email
+    /// index 2 - Painel de profile do google
+    /// index 3 - Painel de registro por email
+    /// </summary>
+    /// <param name="indexPanelsLogin"></param>
+    public void SwitchLoginPanels(int indexPanelsLogin)
+    {
+        switch (indexPanelsLogin)
         {
             case 0:
-                characters[indexCharacter].GetComponent<FindItensPlayer>().itensPlayer[0].SetActive(true);
-                characters[indexCharacter].GetComponent<FindItensPlayer>().itensPlayer[1].SetActive(false);
-                indexSkin = 0;
+                OpenMultipleLogin();
                 break;
             case 1:
-                characters[indexCharacter].GetComponent<FindItensPlayer>().itensPlayer[0].SetActive(false);
-                characters[indexCharacter].GetComponent<FindItensPlayer>().itensPlayer[1].SetActive(true);
-                indexSkin = 1;
+                OpenEmailLogin();
+                break;
+            case 2:
+                OpenProfileGoogle();
+                break;
+            case 3:
+                OpenEmailRegister();
+                break;
+            case 4:
+                OpenForgetPassword();
                 break;
         }
     }
     /// <summary>
-    /// Função que inicia os acessórios do personagem
+    /// Abre o painel de escolha de login
     /// </summary>
-    /// <param name="acessory"></param>
-    void HideAcessory(int acessory)
+    public void OpenMultipleLogin()
     {
-        characters[indexCharacter].GetComponent<FindItensPlayer>().StartChildren();
-
-        switch (acessory)
+        DisableLoginPanels();
+        loginPanels[0].SetActive(true);
+    }
+    /// <summary>
+    /// Abre o painel de Login por email
+    /// </summary>
+    public void OpenEmailLogin()
+    {
+        DisableLoginPanels();
+        loginPanels[1].SetActive(true);
+    }
+    /// <summary>
+    /// Abre o painel de Profile do google
+    /// </summary>
+    public void OpenProfileGoogle()
+    {
+        DisableLoginPanels();
+        loginPanels[2].SetActive(true);
+    }
+    /// <summary>
+    /// Abre o painel de registro por email
+    /// </summary>
+    public void OpenEmailRegister()
+    {
+        DisableLoginPanels();
+        loginPanels[3].SetActive(true);
+    }
+    /// <summary>
+    /// Abre o painel de recuperação de senha
+    /// </summary>
+    public void OpenForgetPassword()
+    {
+        DisableLoginPanels();
+        loginPanels[4].SetActive(true);
+    }
+    /// <summary>
+    /// Desativa os paineis de login 
+    /// </summary>
+    public void DisableLoginPanels()
+    {
+        for (int i = 0; i < loginPanels.Length; i++)
         {
-            case 0:
-                characters[indexCharacter].GetComponent<FindItensPlayer>().itensPlayer[2].SetActive(true);
-                characters[indexCharacter].GetComponent<FindItensPlayer>().itensPlayer[3].SetActive(false);
-                indexAcessory = 2;
-                break;
-            case 1:
-                characters[indexCharacter].GetComponent<FindItensPlayer>().itensPlayer[2].SetActive(false);
-                characters[indexCharacter].GetComponent<FindItensPlayer>().itensPlayer[3].SetActive(true);
-                indexAcessory = 3;
-                break;
+            loginPanels[i].SetActive(false);
         }
     }
-    //////////////////////////////////////////Botões de controle do modo de jogo///////////////////////////////////
     /// <summary>
-    /// Botão start pareamento
+    /// Inicia o game
     /// </summary>
-    public void ButtonStartSeason()
+    public void StartGameMultiplayer()
     {
-        //spawner.StartSeason();
-
-        /*GameManager gameManager = GameManager.instance;
-
-        gameManager.characterIndex = indexCharacter;
-        gameManager.characterSkinIndex = indexSkin;
-        gameManager.characterAcessoryIndex = indexAcessory;*/
-        
-    }
-    
-    public void ButtonJoinSeason()
-    {
-        //spawner.EnterSeason();
+        SceneManager.LoadScene(_scene, LoadSceneMode.Single);
     }
     #endregion
 }

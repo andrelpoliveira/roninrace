@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: a894f4a8096892e4aab6da51b25c820b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -150,10 +150,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   smoothTime: 6
-  jumpHeight: 3
+  jumpHeight: 6
   gravityMultiplier: 1
   _jumpPressed: 0
-  isDoubleJump: 0
+  isDoubleJump: 1
   numberOfJumps: 0
   maxNumberOfJumps: 2
   runSpeed: 8
@@ -331,7 +331,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: e12ada43b1a9f9b4f938a569633a9916, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "307199167488",
+    "project_id": "roninrace-captainlobster",
+    "storage_bucket": "roninrace-captainlobster.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307199167488:android:2a4a734cd5e62110a45ce5",
+        "android_client_info": {
+          "package_name": "com.CaptainLobsterStudio.RoninRace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChm3_iKk255sijFV3Hl1cjp_PaVgsKXWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
