@@ -32,6 +32,8 @@ public class EmailRegister : MonoBehaviour
     [Space]
     [Header("Scripts")]
     public StartController _startController;
+    public FirebaseDataServer _server;
+    public InfoFirestoreJogador _jogador;
     [Space]
     [Header("Retorno de dados")]
     public string urlPhoto;
@@ -43,6 +45,8 @@ public class EmailRegister : MonoBehaviour
     {
         tmpWarning.text = "";
         _startController = FindObjectOfType<StartController>();
+        _server = FindObjectOfType<FirebaseDataServer>();
+        _jogador = FindObjectOfType<InfoFirestoreJogador>();
     }
     #endregion
 
@@ -110,6 +114,12 @@ public class EmailRegister : MonoBehaviour
             Debug.LogFormat("Firebase user created successfully: {0} ({1})",
                 result.User.DisplayName, result.User.UserId);
 
+            StartCoroutine(ClearFields());
+            //Save Firestore DB
+            _server.userId = result.User.UserId;
+            _server.username = username;
+            _server.SaveData();
+
             UpdateUser(username);
         });
     }
@@ -150,9 +160,11 @@ public class EmailRegister : MonoBehaviour
             AuthResult result = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 result.User.DisplayName, result.User.UserId);
-            string username = result.User.DisplayName;
-            string usermail = result.User.Email;
-            LoginSuccessfully(username, usermail);
+            
+            _server.userId = result.User.UserId;
+            _server.LoadData();
+            string email = result.User.Email;
+            StartCoroutine(FillInFields(email));
         });
     }
     /// <summary>
@@ -197,13 +209,15 @@ public class EmailRegister : MonoBehaviour
     /// </summary>
     /// <param name="username"></param>
     /// <param name="email"></param>
-    void LoginSuccessfully(string username, string email)
+    void LoginSuccessfully(string email)
     {
         tmpWarning.color = Color.green;
         tmpWarning.text = "Login success";
         _startController.SwitchLoginPanels(2);
-        _startController.tmpUsername.text = username;
+        _startController.tmpUsername.text = _server.username;
         _startController.tmpEmail.text = email;
+        _jogador.userId = _server.userId;
+        _jogador.username = _server.username;
         StartCoroutine(ClearWarningandInfo());
     }
     #endregion
@@ -237,7 +251,7 @@ public class EmailRegister : MonoBehaviour
                 Debug.Log("User profile update successfully.");
                 tmpWarning.color = Color.green;
                 tmpWarning.text = "Alert," + username + " account successfully created!";
-                _startController.tmpUsername.text = auth.CurrentUser.DisplayName;
+                _startController.tmpUsername.text = _server.username;
                 _startController.tmpEmail.text = auth.CurrentUser.Email;
                 _startController.SwitchLoginPanels(2);
                 StartCoroutine(ClearWarningandInfo());
@@ -347,6 +361,7 @@ public class EmailRegister : MonoBehaviour
         else
         {
             SignInUser(tmpEmailLogin.text, tmpPasswordLogin.text);
+            //_server.LoadData();
         }
     }
     /// <summary>
@@ -392,6 +407,28 @@ public class EmailRegister : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         tmpWarning.text = "";
+    }
+    /// <summary>
+    /// Corrotina de limpeza de campos preenchidos
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ClearFields()
+    {
+        yield return new WaitForSeconds(2f);
+        tmpUsernameRegister.text = "";
+        tmpEmailRegister.text = "";
+        tmpPasswordRegister.text = "";
+        tmpPasswordConfirmRegister.text = "";
+    }
+    /// <summary>
+    /// Corrotina para apresentar o perfil do jogador
+    /// </summary>
+    /// <param name="userEmail"></param>
+    /// <returns></returns>
+    IEnumerator FillInFields(string userEmail)
+    {
+        yield return new WaitForSeconds(1f);
+        LoginSuccessfully(userEmail);
     }
     #endregion
 }

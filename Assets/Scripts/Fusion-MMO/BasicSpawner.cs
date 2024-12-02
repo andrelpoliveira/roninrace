@@ -17,7 +17,14 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkPrefabRef[] _playerPrefab;
     [Header("Objeto Spawn")]
     public Transform _spawnPlayer;
-    
+    [Space]
+    [Header("Info DB jogador")]
+    public string _userId;
+    public string _username;
+    [Space]
+    [Header("Script temporário de Infos do jogador")]
+    public InfoFirestoreJogador _infoJogador;
+
     private void Awake()
     {
         if (connectOnAwake)
@@ -39,7 +46,13 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             Scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex),
             PlayerCount = 5,
         });
-        
+
+        _infoJogador = FindObjectOfType<InfoFirestoreJogador>();
+        _userId = _infoJogador.userId;
+        _username = _infoJogador.username;
+        _infoJogador = null;
+        //Destroy(_infoJogador);
+
     }
     /// <summary>
     /// Inicia como host
@@ -60,7 +73,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnConnectedToServer(NetworkRunner runner)
     {
         NetworkObject playerObject = runner.Spawn(_playerPrefab[_chosenPlayer],_spawnPlayer.position,Quaternion.identity);
-
+        
         runner.SetPlayerObject(runner.LocalPlayer, playerObject);
 
     }
@@ -164,4 +177,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
        
     }
+
+    #region My Methods
+    
+    #endregion
 }
