@@ -24,11 +24,6 @@ public class StartController : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        /*for (int i = 0; i < paineis.Length; i++)
-        {
-            paineis[i].SetActive(false);
-        }
-        paineis[0].SetActive(true);*/
 
     }
     #endregion

@@ -1,5 +1,4 @@
 using System;
-using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +6,7 @@ using UnityEngine.InputSystem;
 using Cinemachine;
 
 [RequireComponent(typeof(CharacterController))]
-public class CharacterMovement : NetworkBehaviour
+public class CharacterMovement : MonoBehaviour
 {
     [Header("Variaveis de Movimento")]
     private Vector3 playerVelocity;
@@ -51,13 +50,9 @@ public class CharacterMovement : NetworkBehaviour
 
     public void Start()
     {
-        NetworkObject thisObject = GetComponent<NetworkObject>();
-        if (thisObject.HasStateAuthority)
-        {
-            virtualCamera.GetComponent<CinemachineVirtualCamera>().Follow = camPoint;
-            cameraTransform = Camera.main.transform;
-            GetComponent<PlayerInput>().camera = Camera.main;
-        }
+         virtualCamera.GetComponent<CinemachineVirtualCamera>().Follow = camPoint;
+         cameraTransform = Camera.main.transform;
+         GetComponent<PlayerInput>().camera = Camera.main;
     }
     private void OnEnable()
     {
@@ -71,10 +66,10 @@ public class CharacterMovement : NetworkBehaviour
     /// <summary>
     /// Update para o modo multiplayer
     /// </summary>
-    public override void FixedUpdateNetwork()
+    public void FixedUpdate()
     {
-        if (HasStateAuthority == false)
-            return;
+        /*if (HasStateAuthority == false)
+            return;*/
 
         if (cameraTransform == null)
             return;
@@ -94,10 +89,7 @@ public class CharacterMovement : NetworkBehaviour
     /// <param name="context"></param>
     public void Move(InputAction.CallbackContext context)
     {
-        if (Object.HasStateAuthority)
-        {
-            moveInput = context.ReadValue<Vector2>();
-        }
+        moveInput = context.ReadValue<Vector2>();
     }
     /// <summary>
     /// Método que cancela a movimentação new input system
@@ -118,12 +110,12 @@ public class CharacterMovement : NetworkBehaviour
         if(numberOfJumps == 0) StartCoroutine(WaitForLanding());
 
 
-        if (Object.HasStateAuthority && isDoubleJump)
+        if (isDoubleJump)
         {
             numberOfJumps++;
             _jumpPressed = true;
         }
-        if (Object.HasStateAuthority && !isDoubleJump)
+        if (!isDoubleJump)
         {
             numberOfJumps = maxNumberOfJumps;
             _jumpPressed = true;
@@ -150,16 +142,16 @@ public class CharacterMovement : NetworkBehaviour
         move = new Vector3(moveInput.x, 0f, moveInput.y);
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
         move.y = 0f;
-        characterController.Move(move * Runner.DeltaTime * speed);
+        characterController.Move(move * Time.deltaTime * speed);
 
         //Gravidade
         ApplyGravity();
-        characterController.Move(playerVelocity * Runner.DeltaTime);
+        characterController.Move(playerVelocity * Time.deltaTime);
 
         //Rotação
         float targetAngle = cameraTransform.eulerAngles.y;
         Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, smoothTime * Runner.DeltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, smoothTime * Time.deltaTime);
     }
     /// <summary>
     /// Aplica gravidade ao jogador
@@ -167,7 +159,7 @@ public class CharacterMovement : NetworkBehaviour
     public void ApplyGravity()
     {
         if (IsGrounded() && verticalVelocity < 0.0f) { verticalVelocity = -1.0f; }
-        else { verticalVelocity += gravityValue * gravityMultiplier * Runner.DeltaTime; }
+        else { verticalVelocity += gravityValue * gravityMultiplier * Time.deltaTime; }
 
         playerVelocity.y = verticalVelocity;
     }

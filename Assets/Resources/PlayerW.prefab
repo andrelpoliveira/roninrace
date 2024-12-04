@@ -199,13 +199,9 @@ GameObject:
   - component: {fileID: 7135966696664722440}
   - component: {fileID: 1668409258306311702}
   - component: {fileID: 6784247778376486152}
-  - component: {fileID: 6799685893382867248}
   - component: {fileID: 6841811224974167188}
-  - component: {fileID: 8072250754162686451}
   - component: {fileID: 1908802817887107323}
   - component: {fileID: 8143624997455722875}
-  - component: {fileID: 2642171332306169757}
-  - component: {fileID: 8924089394109367503}
   m_Layer: 0
   m_Name: PlayerW
   m_TagString: Player
@@ -280,25 +276,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6799685893382867248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7299273985215734521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 2335779154
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 8072250754162686451}
-  - {fileID: 2642171332306169757}
 --- !u!143 &6841811224974167188
 CharacterController:
   m_ObjectHideFlags: 0
@@ -325,33 +302,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8072250754162686451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7299273985215734521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e0e5b207f0222045ba5889d82d34aba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 4
-  smoothTime: 6
-  jumpHeight: 6
-  gravityMultiplier: 1
-  _jumpPressed: 0
-  isDoubleJump: 1
-  numberOfJumps: 0
-  maxNumberOfJumps: 2
-  runSpeed: 8
-  isRun: 0
-  timeRun: 2
-  characterController: {fileID: 0}
-  camPoint: {fileID: 6094023129024682083}
-  cameraTransform: {fileID: 0}
-  virtualCamera: {fileID: 0}
 --- !u!114 &1908802817887107323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,7 +345,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8072250754162686451}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CharacterMovement, Assembly-CSharp
         m_MethodName: Move
         m_Mode: 0
@@ -411,7 +361,7 @@ MonoBehaviour:
     m_ActionName: Game/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8072250754162686451}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CharacterMovement, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 0
@@ -442,33 +392,3 @@ MonoBehaviour:
   m_DefaultActionMap: Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &2642171332306169757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7299273985215734521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
---- !u!114 &8924089394109367503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7299273985215734521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56add535d7908d248a3123b2f81610b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  userId: 
-  username: 

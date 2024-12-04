@@ -9,23 +9,31 @@ public class PlayerSaveData : MonoBehaviour
     public string username;
     [Space]
     [Header("Scripts")]
-    public BasicSpawner spawner;
-    public InfoFirestoreJogador _infoJogador;
+    //public BasicSpawner spawner;
+    public UIManager _uiManager;
 
     private void Start()
     {
-        spawner = FindObjectOfType<BasicSpawner>();
-        _infoJogador = FindAnyObjectByType<InfoFirestoreJogador>();
-        userId = spawner._userId;
-        username = spawner._username;
+        //spawner = FindObjectOfType<BasicSpawner>();
+        _uiManager = FindObjectOfType<UIManager>();
         ClearInfos();
+    }
+
+    public void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+            BtnStatsPlayer();
     }
 
     public void ClearInfos()
     {
-        spawner._userId = "";
-        spawner._username = "";
-        spawner = null;
-        Destroy(_infoJogador.gameObject);
+        _uiManager.StatsPlayer(userId);
+        //_uiManager = null;
+        //Destroy(_infoJogador.gameObject);
+    }
+
+    public void BtnStatsPlayer()
+    {
+        _uiManager.StatsPlayer(userId);
     }
 }

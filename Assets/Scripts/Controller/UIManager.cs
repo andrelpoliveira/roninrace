@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -7,13 +8,14 @@ public class UIManager : MonoBehaviour
     [Header("Paineis")]
     public GameObject[] paineisGame;
     [Space]
-    [Header("Scripts")]
-    public BasicSpawner basicSpawner;
+    [Header("Teste")]
+    public TMP_Text tmptesteId;
+
+
     #region Unity Methods
     void Start()
     {
         SwitchPanels(0);
-        basicSpawner = FindObjectOfType<BasicSpawner>();
     }
     #endregion
 
@@ -36,7 +38,19 @@ public class UIManager : MonoBehaviour
     /// <param name="indexPlayer"></param>
     public void ChosenPlayer(int indexPlayer)
     {
-        basicSpawner._chosenPlayer = indexPlayer;
+    }
+
+    public void StatsPlayer(string userId)
+    {
+        tmptesteId.color = Color.red;
+        tmptesteId.text = userId;
+        StartCoroutine(ClearInfo());
+    }
+
+    IEnumerator ClearInfo()
+    {
+        yield return new WaitForSeconds(2f);
+        tmptesteId.text = "";
     }
     #endregion
 }
