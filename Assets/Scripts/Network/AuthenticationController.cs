@@ -3,74 +3,102 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
+using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 using System;
+using Unity.Services.Authentication.PlayerAccounts;
+using System.Configuration;
+using System.Text;
+using Controller;
 
-public class AuthenticationController : MonoBehaviour
+namespace Network
 {
-    [Header("Variáveis de Controle")]
-    public bool eventsInitialized = false;
-
-    public void StartGame()
+    public class AuthenticationController : MonoBehaviour
     {
-        StartClientService();
-    }
+        [Tooltip("Events")]
+        public event Action<PlayerInfo, string> OnSignedIn;
+        [Tooltip("Scripts")]
+        MenuController _menuController;
+        [Tooltip("Variáveis")]
+        string m_ExternalIds;
+        private PlayerInfo playerInfo;
 
-    public async void StartClientService()
-    {
-        try
+        #region Unity Methods
+        async void Awake()
         {
-            if(UnityServices.State != ServicesInitializationState.Initialized)
-            {
-                var options = new InitializationOptions();
-                options.SetProfile("default_profile");
-                await UnityServices.InitializeAsync();
-                Debug.Log(UnityServices.State);
-            }
-
-            if (!eventsInitialized) 
-            {
-                SetupEvents();
-            }
-
-            if (AuthenticationService.Instance.SessionTokenExists)
-            {
-
-            }
-            else
-            {
-
-            }
-
+            await UnityServices.InitializeAsync();
+            PlayerAccountService.Instance.SignedIn += SignInWithUnity;
         }
-        catch (Exception e)
+        #endregion
+
+        #region My Methods
+        /// <summary>
+        /// Sistema de login pela unity
+        /// </summary>
+        private async void SignInWithUnity()
         {
-            Debug.LogException(e);
+            try
+            {
+                var accessToken = PlayerAccountService.Instance.AccessToken;
+
+                await SignInWithUnityAsync(accessToken);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
         }
-    }
-
-    void SetupEvents()
-    {
-        eventsInitialized = true;
-        AuthenticationService.Instance.SignedIn += () => {
-            // Shows how to get a playerID
-            Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
-
-            // Shows how to get an access token
-            Debug.Log($"Access Token: {AuthenticationService.Instance.AccessToken}");
-
-        };
-
-        AuthenticationService.Instance.SignInFailed += (err) => {
-            Debug.LogError(err);
-        };
-
-        AuthenticationService.Instance.SignedOut += () => {
-            Debug.Log("Player signed out.");
-        };
-
-        AuthenticationService.Instance.Expired += () =>
+        /// <summary>
+        /// Função para instanciar o sistema de login
+        /// </summary>
+        /// <returns></returns>
+        public async Task InitSignIn()
         {
-            Debug.Log("Player session could not be refreshed and expired.");
-        };
+            await PlayerAccountService.Instance.StartSignInAsync();
+        }
+
+        async Task SignInWithUnityAsync(string accessToken)
+        {
+            try
+            {
+                await AuthenticationService.Instance.SignInWithUnityAsync(accessToken);
+                Debug.Log("SignIn is successful.");
+
+                playerInfo = AuthenticationService.Instance.PlayerInfo;
+
+                var name = await AuthenticationService.Instance.GetPlayerNameAsync();
+
+                OnSignedIn?.Invoke(playerInfo, name);
+            }
+            catch (AuthenticationException ex)
+            {
+                // Compare error code to AuthenticationErrorCodes
+                // Notify the player with the proper error message
+                Debug.LogException(ex);
+            }
+            catch (RequestFailedException ex)
+            {
+                // Compare error code to CommonErrorCodes
+                // Notify the player with the proper error message
+                Debug.LogException(ex);
+            }
+        }
+
+        void OnDestroy() 
+        {
+            PlayerAccountService.Instance.SignedIn -= SignInWithUnity;
+        }
+        /// <summary>
+        /// Sistema de logout pela unity
+        /// </summary>
+        public void SignOut()
+        {
+            AuthenticationService.Instance.SignOut();
+            PlayerAccountService.Instance.SignOut();
+            OnDestroy();
+            Debug.Log("Signed Out successfully");
+        }
+        #endregion
     }
 }
+

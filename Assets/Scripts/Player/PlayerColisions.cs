@@ -1,22 +1,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerColisions : MonoBehaviour
 {
-    //Scripts
-    public CharacterMovement characterMovement;
+    [Header("Scripts")]
     public PlayerController playerController;
-    //Variáveis de controle
+    [Space]
+    [Header("Variáveis de controle")]
     public float actualSpeed;
     public float speedReduction;
+    [Space]
+    [Header("TMP")]
+    public TMP_Text tmpNamePlayer;
 
 
     #region Unity Methods
     void Start()
     {
-        characterMovement = GetComponent<CharacterMovement>();
+        playerController = GetComponent<PlayerController>();
     }
 
     /// <summary>
@@ -30,8 +34,8 @@ public class PlayerColisions : MonoBehaviour
     {
         if(other.tag == "DragT")
         {
-            actualSpeed = characterMovement.speed;
-            characterMovement.speed = speedReduction;
+            actualSpeed = playerController.speed;
+            playerController.speed = speedReduction;
         }
         if(other.tag == "BarreiraP")
         {
@@ -49,7 +53,7 @@ public class PlayerColisions : MonoBehaviour
     {
         if(other.tag == "DragT")
         {
-            characterMovement.speed = actualSpeed;
+            playerController.speed = actualSpeed;
         }
         
     }
@@ -62,8 +66,8 @@ public class PlayerColisions : MonoBehaviour
     /// </summary>
     public void GelatinTrap(float timeParalyze)
     {
-        actualSpeed = characterMovement.speed;
-        characterMovement.speed = 0f;
+        actualSpeed = playerController.speed;
+        playerController.speed = 0f;
         StartCoroutine(DisableGelatinTrap(timeParalyze));
     }
     /// <summary>
@@ -72,8 +76,8 @@ public class PlayerColisions : MonoBehaviour
     /// <param name="timeParalyze"></param>
     public void ConfusionTrap(float timeParalyze)
     {
-        actualSpeed = characterMovement.speed;
-        characterMovement.speed = -8f;
+        actualSpeed = playerController.speed;
+        playerController.speed = -8f;
         StartCoroutine(DisableConfusionTrap(timeParalyze));
     }
     /// <summary>
@@ -82,8 +86,8 @@ public class PlayerColisions : MonoBehaviour
     /// <param name="timeParalyze"></param>
     public void LowerTrap(float timeParalyze)
     {
-        actualSpeed = characterMovement.speed;
-        characterMovement.speed = speedReduction;
+        actualSpeed = playerController.speed;
+        playerController.speed = speedReduction;
         StartCoroutine (DisableLowerTrap(timeParalyze));
     }
     /// <summary>
@@ -94,7 +98,7 @@ public class PlayerColisions : MonoBehaviour
     IEnumerator DisableGelatinTrap(float timeP)
     {
         yield return new WaitForSeconds(timeP);
-        characterMovement.speed = actualSpeed;
+        playerController.speed = actualSpeed;
         actualSpeed = 0;
     }
     /// <summary>
@@ -105,7 +109,7 @@ public class PlayerColisions : MonoBehaviour
     IEnumerator DisableConfusionTrap(float timeP)
     {
         yield return new WaitForSeconds(timeP);
-        characterMovement.speed = actualSpeed;
+        playerController.speed = actualSpeed;
         actualSpeed = 0;
     }
     /// <summary>
@@ -116,7 +120,7 @@ public class PlayerColisions : MonoBehaviour
     IEnumerator DisableLowerTrap(float timeP)
     {
         yield return new WaitForSeconds(timeP);
-        characterMovement.speed = actualSpeed;
+        playerController.speed = actualSpeed;
         actualSpeed = 0;
     }
     #endregion

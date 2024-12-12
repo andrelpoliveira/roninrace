@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Cinemachine;
+using Unity.Cinemachine;
+using Unity.Netcode;
 
 [RequireComponent(typeof(CharacterController))]
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : NetworkBehaviour
 {
     [Header("Variaveis de Movimento")]
     private Vector3 playerVelocity;
@@ -46,30 +47,46 @@ public class CharacterMovement : MonoBehaviour
         playerActions = new InputActions();
         characterController = GetComponent<CharacterController>();
         virtualCamera = GameObject.Find("3rdPersonCinemachine");
+        //Input Actions
+        //playerActions.Game.Move.performed += Move;
+        playerActions.Game.Jump.performed += Jump;
+        playerActions.Game.Trap.performed += Trap;
     }
 
     public void Start()
     {
-         virtualCamera.GetComponent<CinemachineVirtualCamera>().Follow = camPoint;
-         cameraTransform = Camera.main.transform;
-         GetComponent<PlayerInput>().camera = Camera.main;
+        virtualCamera.GetComponent<CinemachineCamera>().Follow = camPoint;
+        cameraTransform = Camera.main.transform;
+        GetComponent<PlayerInput>().camera = Camera.main;
+        speed = 6f;
     }
     private void OnEnable()
     {
-        playerActions.Game.Enable();
+        playerActions.Game.Move.Enable();
+        playerActions.Game.Jump.Enable();
+        playerActions.Game.Trap.Enable();
+        playerActions.Enable();
     }
     
     private void OnDisable()
     {
-        playerActions.Game.Disable();
+        playerActions.Game.Move.Disable();
+        playerActions.Game.Jump.Disable();
+        playerActions.Game.Trap.Disable();
+        playerActions.Disable();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if(!IsOwner) Destroy(this);
     }
     /// <summary>
     /// Update para o modo multiplayer
     /// </summary>
-    public void FixedUpdate()
+    public void Update()
     {
-        /*if (HasStateAuthority == false)
-            return;*/
+        if (!IsOwner)
+            return;
 
         if (cameraTransform == null)
             return;
@@ -83,6 +100,7 @@ public class CharacterMovement : MonoBehaviour
     #endregion
 
     #region My Methods
+    ///////////////////////////////////Inputs/////////////////////////////////////////////////////////////////
     /// <summary>
     /// Método de movimentação new input system
     /// </summary>
@@ -90,6 +108,7 @@ public class CharacterMovement : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        Debug.Log(moveInput.ToString());
     }
     /// <summary>
     /// Método que cancela a movimentação new input system
@@ -130,8 +149,9 @@ public class CharacterMovement : MonoBehaviour
     {
 
     }
+    //////////////////////////////////////Sistema de movimentação/////////////////////////////////////////////
     /// <summary>
-    /// Métodos para chamada no FixedUpdateNetwork para multiplayer
+    /// Métodos para chamada no Update para multiplayer
     /// </summary>
     public void MovePlayer()
     {

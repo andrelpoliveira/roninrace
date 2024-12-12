@@ -18,7 +18,7 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "a59a19d7-5996-4ed1-85ed-4cd86ff84a10",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "Look",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "0b42a614-925b-49f2-975b-8f45be7bc7e0",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -45,7 +45,7 @@
                     "name": "Shoot",
                     "type": "Button",
                     "id": "ce586a33-6e5b-4ef2-8c8e-5a15e650a9b4",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -177,6 +177,17 @@
                     "name": "",
                     "id": "f107f580-7999-45d4-86f6-0c9945738706",
                     "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "21da9f07-3de8-4def-a110-da4a6def31d4",
+                    "path": "<Touchscreen>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
