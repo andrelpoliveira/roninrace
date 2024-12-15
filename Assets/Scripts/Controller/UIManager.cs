@@ -48,6 +48,10 @@ namespace Controller
         #region My Methods
         /// <summary>
         /// Faz o switch entre os painéis
+        /// index 0 - Join
+        /// index 1 - GamePlayer
+        /// index 2 - Lobby Select
+        /// index 3 - Lobby Wait
         /// </summary>
         /// <param name="indexPanel"></param>
         public void SwitchPanels(int indexPanel)

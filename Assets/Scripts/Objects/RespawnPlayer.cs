@@ -10,8 +10,8 @@ public class RespawnPlayer : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            other.GetComponent<CharacterMovement>().enabled = false;
-            other.transform.position = respawnPoint.position;
+            //other.GetComponent<CharacterMovement>().enabled = false;
+            //other.transform.position = respawnPoint.position;
         }
     }
 }

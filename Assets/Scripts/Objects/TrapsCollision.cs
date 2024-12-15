@@ -62,12 +62,12 @@ public class TrapsCollision : MonoBehaviour
             case TypeTrap.UNLUCKYW:
                 if (unluckyRandom <= 4)
                 {
-                    obj.GetComponent<CharacterMovement>().enabled = false;
+                    //obj.GetComponent<CharacterMovement>().enabled = false;
                     obj.transform.position = watchObj[0].position;
                 }
                 if(unluckyRandom >= 5)
                 {
-                    obj.GetComponent<CharacterMovement>().enabled = false;
+                    //obj.GetComponent<CharacterMovement>().enabled = false;
                     obj.transform.position = watchObj[1].position;
                 }
                 Destroy(this.gameObject, 1f);

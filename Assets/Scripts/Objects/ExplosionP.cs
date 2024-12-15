@@ -1,13 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class ExplosionP : MonoBehaviour
+public class ExplosionP : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public ExplodePortal parent;
+
+    private void Start()
     {
-        Destroy(gameObject, 1.5f);
+        if (!IsOwner) { return; }
+
+        StartCoroutine(DestroyObject());
+    }
+
+    IEnumerator DestroyObject()
+    {
+        yield return new WaitForSeconds(1);
+        parent.DestroyServerRpc();
     }
 
 }

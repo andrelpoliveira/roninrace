@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerColisions : MonoBehaviour
+public class PlayerColisions : NetworkBehaviour
 {
     [Header("Scripts")]
     public PlayerController playerController;
@@ -12,17 +10,13 @@ public class PlayerColisions : MonoBehaviour
     [Header("Variáveis de controle")]
     public float actualSpeed;
     public float speedReduction;
-    [Space]
-    [Header("TMP")]
-    public TMP_Text tmpNamePlayer;
-
+    
 
     #region Unity Methods
     void Start()
     {
         playerController = GetComponent<PlayerController>();
     }
-
     /// <summary>
     /// Tags:
     /// DragT - Sistema de ventiladores
@@ -47,6 +41,11 @@ public class PlayerColisions : MonoBehaviour
             //playerController.enabled = false;
 
         }
+        if(other.tag == "NPC" && IsOwner)
+        {
+            playerController.IsNpc = true;
+            other.GetComponent<NPCLobby>().LobbySwitch();
+        }
         
     }
     private void OnTriggerExit(Collider other)
@@ -55,7 +54,12 @@ public class PlayerColisions : MonoBehaviour
         {
             playerController.speed = actualSpeed;
         }
-        
+        if (other.tag == "NPC" && IsOwner)
+        {
+            playerController.IsNpc = false;
+            other.GetComponent<NPCLobby>().CloseLobby();
+        }
+
     }
     #endregion
     //////////////////////////////////////Métodos de traps//////////////////////////////////

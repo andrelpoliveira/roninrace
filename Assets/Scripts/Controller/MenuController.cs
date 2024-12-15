@@ -37,7 +37,6 @@ namespace Controller
         [Space]
         [Header("Scripts")]
         public AuthenticationController _authController;
-        public GameLocalSave _gameLocalSave;
         public CloudSaving _cloudSaving;
         [Tooltip("Variáveis privadas para controle")]
         private string _playeName;
@@ -83,7 +82,6 @@ namespace Controller
             tmpWarningGame.text = "";
             tmpWarningLogin.text = "";
             _authController = FindAnyObjectByType<AuthenticationController>();
-            _gameLocalSave = FindAnyObjectByType<GameLocalSave>();
             _cloudSaving = FindAnyObjectByType<CloudSaving>();
         }
         /// <summary>
@@ -154,15 +152,6 @@ namespace Controller
         private void AuthControler_OnSignedIn(PlayerInfo playerInfo, string playerName)
         {
             _playeName = playerName;
-            if(_gameLocalSave.userId != playerInfo.Id)
-            {
-                _gameLocalSave.userId = playerInfo.Id;
-                _gameLocalSave.Save();
-            }
-            else
-            {
-                _gameLocalSave.Load();
-            }
 
             StartCoroutine(WaitLoginResponse());
         }

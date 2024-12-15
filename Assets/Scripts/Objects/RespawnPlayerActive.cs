@@ -8,7 +8,7 @@ public class RespawnPlayerActive : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            other.GetComponent<CharacterMovement>().enabled = true;
+            //other.GetComponent<CharacterMovement>().enabled = true;
         }
     }
 }
