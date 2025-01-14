@@ -123,7 +123,7 @@ Material:
     - _FlowStrength: 0.19
     - _FoamAmount: 2
     - _FoamCutoff: 1
-    - _FoamScale: 100
+    - _FoamScale: 35.62
     - _FoamSpeed: 0.2
     - _Foam_Distance: 1.74
     - _GlossMapScale: 0
@@ -155,7 +155,7 @@ Material:
     - _DeepWater: {r: 0.1439124, g: 0.3774571, b: 1, a: 0.5803922}
     - _DepthColor: {r: 0.1439124, g: 0.3774571, b: 0.9245283, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FoamColor: {r: 1, g: 0.9669811, b: 0.9669811, a: 1}
     - _Light_Foam_Color: {r: 0.74901956, g: 0.74901956, b: 0.74901956, a: 0}
     - _ShadowWater: {r: 0.126157, g: 0.8019537, b: 0.990566, a: 0.40392157}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
